@@ -6,6 +6,24 @@ import project3Image from "../assets/img/projects-page-img-03.jpg";
 import project4Image from "../assets/img/projects-page-img-04.jpg";
 import project5Image from "../assets/img/projects-page-img-05.jpg";
 import project6Image from "../assets/img/projects-page-img-06.jpg";
+import faro1Image from "../assets/img/faro (1).jpeg";
+import faro2Image from "../assets/img/faro (2).jpeg";
+import faro3Image from "../assets/img/faro (3).jpeg";
+import faro4Image from "../assets/img/faro (4).jpeg";
+import faro5Image from "../assets/img/faro (5).jpeg";
+import faro6Image from "../assets/img/faro (6).jpeg";
+import faro7Image from "../assets/img/faro (7).jpeg";
+import faro8Image from "../assets/img/faro (8).jpeg";
+import faro9Image from "../assets/img/faro (9).jpeg";
+import faro10Image from "../assets/img/faro (10).jpeg";
+import faro11Image from "../assets/img/faro (11).jpeg";
+import faro12Image from "../assets/img/faro (12).jpeg";
+import faro13Image from "../assets/img/faro (13).jpeg";
+import faro14Image from "../assets/img/faro (14).jpeg";
+import faro15Image from "../assets/img/faro (15).jpeg";
+import faro16Image from "../assets/img/faro (16).jpeg";
+import faro17Image from "../assets/img/faro (17).jpeg";
+import faro18Image from "../assets/img/faro (18).jpeg";
 
 export type PropertyOperation = "Venta" | "Arriendo";
 export type PropertyType = "Apartamento" | "Casa" | "Local";
@@ -29,27 +47,51 @@ export type Property = {
 
 export const properties: Property[] = [
   {
-    slug: "apartamento-balcon-vista-poblado",
-    title: "Apartamento con balcón y vista",
+    slug: "departamento-amoblado-edificio-faro-norte-antofagasta",
+    title: "Departamento amoblado 2 dormitorios • Edificio Faro Norte",
     type: "Apartamento",
-    location: "Medellín • El Poblado",
-    operation: "Venta",
-    price: "$420.000.000",
-    bedrooms: 3,
-    bathrooms: 2,
-    areaM2: 98,
+    location: "Antofagasta • Sector Norte (Ascotán Norte #155)",
+    operation: "Arriendo",
+    price: "$730.000 / mes (gastos comunes incluidos)",
+    bedrooms: 2,
+    bathrooms: 1,
     parking: 1,
-    stratum: 6,
     description:
-      "Apartamento iluminado con balcón amplio, distribución eficiente y vista despejada. Ideal para vivir cerca de todo con una sensación de calma.",
+      "Se arrienda departamento amoblado en Edificio Faro Norte, ubicado en el sector norte de Antofagasta (Ascotán Norte #155, con Oficina Castilla). Excelente conectividad y cercanía a Mall Paseo La Portada, bencineras, Universidad INACAP, colegios, jardín infantil, restaurantes, supermercados (Líder, Tottus, Unimarc), canchas de pádel, centros médicos y a pocas cuadras de la costanera y playa La Chimba. Piso 9. Arriendo mensual $730.000 con gastos comunes incluidos + 50% comisión de corretaje.",
     features: [
-      "Balcón",
-      "Unidad cerrada",
-      "Ascensor",
-      "Portería 24/7",
-      "Zonas comunes",
+      "Amoblado",
+      "Piso 9",
+      "Cocina americana",
+      "Living",
+      "Terraza",
+      "Closets",
+      "Estacionamiento",
+      "Bodega",
+      "Piscina",
+      "Sala de eventos",
+      "Quinchos",
+      "Conserjería 24/7",
     ],
-    images: [project1Image, project4Image, project6Image],
+    images: [
+      faro1Image,
+      faro2Image,
+      faro3Image,
+      faro4Image,
+      faro5Image,
+      faro6Image,
+      faro7Image,
+      faro8Image,
+      faro9Image,
+      faro10Image,
+      faro11Image,
+      faro12Image,
+      faro13Image,
+      faro14Image,
+      faro15Image,
+      faro16Image,
+      faro17Image,
+      faro18Image,
+    ],
   },
   {
     slug: "casa-conjunto-terraza-envigado",
