@@ -3,15 +3,20 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 export interface Props {
+  slug: string;
   title: string;
   location: string;
-  year: string;
-  category: string;
+  operation: string;
+  price: string;
+  type: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  areaM2?: number;
   image: ImageMetadata | string;  // Accept both types
   alt: string;
 }
 
-const { title, location, year, category, image, alt } = Astro.props;
+const { slug, title, location, operation, price, type, bedrooms, bathrooms, areaM2, image, alt } = Astro.props;
 
 // Helper to check if it's an SVG (for local images)
 // @ts-ignore - image.format might not be in types yet
@@ -20,17 +25,53 @@ const isSVG = typeof image !== 'string' && image?.format === 'svg';
 // For remote images, we need to ensure they're from allowed domains
 // You can add this check if needed
 const isRemoteImage = typeof image === 'string' && (image.startsWith('http') || image.startsWith('https'));
+
+const details = [
+  typeof bedrooms === 'number' ? `${bedrooms} hab` : null,
+  typeof bathrooms === 'number' ? `${bathrooms} baños` : null,
+  typeof areaM2 === 'number' ? `${areaM2} m²` : null
+].filter(Boolean).join(' • ');
 ---
 
-<div class="group cursor-pointer">
-  <div class="relative overflow-hidden mb-4 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center">
-    
-    {typeof image === 'string' ? (
-      // Handle string URLs (could be public folder or remote images)
-      isRemoteImage ? (
-        // Remote image - use img tag with proper attributes
+<article
+  class="group"
+  data-property-card="true"
+  data-operation={operation}
+  data-type={type}
+>
+  <a href={`/projects/${slug}`} class="block focus:outline-none focus:ring-1 focus:ring-primary rounded">
+    <div class="relative overflow-hidden mb-4 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center">
+      <div class="absolute top-4 left-4 z-20">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/90 text-slate-900">
+          {operation}
+        </span>
+      </div>
+      
+      {typeof image === 'string' ? (
+        isRemoteImage ? (
+          <img
+            src={image}
+            alt={alt}
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
+            width={800}
+            height={600}
+          />
+        ) : (
+          <img
+            src={image}
+            alt={alt}
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+            decoding="async"
+            width={800}
+            height={600}
+          />
+        )
+      ) : isSVG ? (
         <img
-          src={image}
+          src={image.src}
           alt={alt}
           class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
@@ -39,45 +80,29 @@ const isRemoteImage = typeof image === 'string' && (image.startsWith('http') || 
           height={600}
         />
       ) : (
-        // Public folder image - use img tag with explicit dimensions
-        <img
+        <Image
           src={image}
           alt={alt}
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          loading="lazy"
-          decoding="async"
-          width={800}
-          height={600}
+          widths={[240, 540, 720, image.width]}
+          sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${image.width}px`}
         />
-      )
-    ) : isSVG ? (
-      // Local SVG - use img tag to avoid rasterization
-      <img
-        src={image.src}
-        alt={alt}
-        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        loading="lazy"
-        decoding="async"
-        width={800}
-        height={600}
-      />
-    ) : (
-      <Image
-        src={image}
-        alt={alt}
-       widths={[240, 540, 720, image.width]}
-  sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${image.width}px`}
-  
-      />
-    )}
-    
-  </div>
-  
-  <div class="flex justify-between items-start">
-    <div>
-      <h3 class="text-slate-900 dark:text-slate-100 text-lg font-semibold tracking-tight">{title}</h3>
-      <p class="text-slate-500 dark:text-slate-400 text-sm font-light">{category} • {location}</p>
+      )}
+      
     </div>
-    <span class="text-slate-400 text-sm font-medium">{year}</span>
-  </div>
-</div>
+    
+    <div class="flex justify-between items-start gap-4">
+      <div>
+        <h3 class="text-slate-900 dark:text-slate-100 text-lg font-semibold tracking-tight group-hover:text-primary transition-colors">
+          {title}
+        </h3>
+        <p class="text-slate-500 dark:text-slate-400 text-sm font-light">{type} • {location}</p>
+        {details ? (
+          <p class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider mt-2">
+            {details}
+          </p>
+        ) : null}
+      </div>
+      <span class="text-slate-900 dark:text-slate-100 text-sm font-bold whitespace-nowrap">{price}</span>
+    </div>
+  </a>
+</article>

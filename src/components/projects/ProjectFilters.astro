@@ -1,29 +1,153 @@
 ---
-import Container from '../shared/Container.astro';
+import Container from "../shared/Container.astro";
 
 const filters = [
-  { name: "All Projects", active: true },
-  { name: "Residential", active: false },
-  { name: "Commercial", active: false },
-  { name: "Urban Design", active: false },
-  { name: "Cultural", active: false },
-  { name: "Interior", active: false }
+  { name: "Todas", kind: "all", value: "all", active: true },
+  { name: "Venta", kind: "operation", value: "venta", active: false },
+  { name: "Arriendo", kind: "operation", value: "arriendo", active: false },
+  { name: "Apartamento", kind: "type", value: "apartamento", active: false },
+  { name: "Casa", kind: "type", value: "casa", active: false },
+  { name: "Local", kind: "type", value: "local", active: false },
 ];
 ---
 
 <Container>
-  <div class="flex flex-wrap gap-2 mb-10 border-b border-slate-200 dark:border-slate-800 pb-6">
-    {filters.map((filter) => (
-      <button
-        class:list={[
-          "px-5 py-2 rounded text-sm font-medium transition-all",
-          filter.active
-            ? "bg-primary text-white"
-            : "text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800"
-        ]}
-      >
-        {filter.name}
-      </button>
-    ))}
+  <div
+    class="flex flex-wrap gap-2 mb-10 border-b border-slate-200 dark:border-slate-800 pb-6"
+  >
+    {
+      filters.map((filter) => (
+        <button
+          type="button"
+          data-filter-kind={filter.kind}
+          data-filter-value={filter.value}
+          aria-pressed={filter.active ? "true" : "false"}
+          class:list={[
+            "px-5 py-2 rounded text-sm font-medium transition-all",
+            filter.active
+              ? "bg-primary text-white"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800",
+          ]}
+        >
+          {filter.name}
+        </button>
+      ))
+    }
   </div>
 </Container>
+
+<script is:inline>
+  const normalize = (value) =>
+    String(value ?? "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .trim();
+
+  const getButtons = () =>
+    Array.from(
+      document.querySelectorAll("button[data-filter-kind][data-filter-value]"),
+    );
+  const getCards = () =>
+    Array.from(document.querySelectorAll('[data-property-card="true"]'));
+
+  const getAllButton = () =>
+    getButtons().find(
+      (b) =>
+        normalize(b.dataset.filterKind) === "all" &&
+        normalize(b.dataset.filterValue) === "all",
+    );
+
+  const syncButtonStyles = () => {
+    getButtons().forEach((button) => {
+      const isActive = button.getAttribute("aria-pressed") === "true";
+      button.classList.toggle("bg-primary", isActive);
+      button.classList.toggle("text-white", isActive);
+      button.classList.toggle("text-slate-600", !isActive);
+      button.classList.toggle("dark:text-slate-400", !isActive);
+    });
+  };
+
+  const readSelection = () => {
+    const selectedOperations = new Set();
+    const selectedTypes = new Set();
+
+    getButtons().forEach((button) => {
+      if (button.getAttribute("aria-pressed") !== "true") return;
+
+      const kind = normalize(button.dataset.filterKind);
+      const value = normalize(button.dataset.filterValue);
+
+      if (kind === "operation") selectedOperations.add(value);
+      if (kind === "type") selectedTypes.add(value);
+    });
+
+    return { selectedOperations, selectedTypes };
+  };
+
+  const applySelection = () => {
+    const { selectedOperations, selectedTypes } = readSelection();
+
+    getCards().forEach((card) => {
+      const operation = normalize(card.getAttribute("data-operation"));
+      const type = normalize(card.getAttribute("data-type"));
+
+      const matchesOperation =
+        selectedOperations.size === 0 || selectedOperations.has(operation);
+      const matchesType = selectedTypes.size === 0 || selectedTypes.has(type);
+
+      card.classList.toggle("hidden", !(matchesOperation && matchesType));
+    });
+  };
+
+  const clearToAll = () => {
+    getButtons().forEach((button) =>
+      button.setAttribute("aria-pressed", "false"),
+    );
+    const allButton = getAllButton();
+    if (allButton) allButton.setAttribute("aria-pressed", "true");
+    syncButtonStyles();
+    applySelection();
+  };
+
+  const toggleButton = (button) => {
+    const kind = normalize(button.dataset.filterKind);
+    const value = normalize(button.dataset.filterValue);
+
+    if (kind === "all" && value === "all") {
+      clearToAll();
+      return;
+    }
+
+    const allButton = getAllButton();
+    if (allButton) allButton.setAttribute("aria-pressed", "false");
+
+    const isActive = button.getAttribute("aria-pressed") === "true";
+    button.setAttribute("aria-pressed", isActive ? "false" : "true");
+
+    const { selectedOperations, selectedTypes } = readSelection();
+    const hasAny = selectedOperations.size > 0 || selectedTypes.size > 0;
+    if (!hasAny && allButton) allButton.setAttribute("aria-pressed", "true");
+
+    syncButtonStyles();
+    applySelection();
+  };
+
+  const init = () => {
+    const buttons = getButtons();
+    if (!buttons.length) return;
+
+    syncButtonStyles();
+    applySelection();
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => toggleButton(button));
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+</script>
