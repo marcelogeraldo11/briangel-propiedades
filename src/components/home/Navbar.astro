@@ -1,7 +1,7 @@
 ---
 import Container from "../shared/Container.astro";
 import Icon from "../shared/Icon.astro";
-import logoSrc from "../../assets/img/logo-briangel.jpg";
+import logoSrc from "../../assets/img/logo-briangel.png";
 
 const currentPath = Astro.url.pathname;
 ---
@@ -9,10 +9,10 @@ const currentPath = Astro.url.pathname;
 <header
   class="fixed top-0 w-full z-50 bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-slate-100 dark:border-slate-800"
 >
-  <Container class="h-20 flex items-center justify-between">
+  <Container class="h-16 flex items-center justify-between">
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-3 group cursor-pointer">
-      <img src={logoSrc.src} alt="Briangel" style="height: 48px; width: auto;" />
+    <a href="/" class="flex items-center gap-3 group cursor-pointer shrink-0">
+      <img src={logoSrc.src} alt="Briangel" style="height: 44px; width: auto;" />
     </a>
 
     <!-- Desktop Navigation -->
@@ -52,122 +52,177 @@ const currentPath = Astro.url.pathname;
       </a>
     </nav>
 
-    <!-- CTA -->
-    <div class="flex items-center gap-4">
+    <!-- CTA + Mobile toggle -->
+    <div class="flex items-center gap-2">
       <a
         href="/contact"
-        class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-2"
+        class="hidden md:inline-flex bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded text-sm font-bold uppercase tracking-wider transition-all items-center gap-2"
       >
         <Icon name="send" size={16} />
         <span>Contacto</span>
       </a>
 
+      <!-- Mobile: contacto icon only -->
+      <a
+        href="/contact"
+        class="md:hidden p-2 text-primary"
+        aria-label="Contacto"
+      >
+        <Icon name="send" size={20} />
+      </a>
+
       <!-- Mobile menu button -->
       <button
-        class="md:hidden p-2 text-slate-600 dark:text-slate-400"
-        aria-label="Open menu"
+        class="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:text-primary transition-colors"
+        aria-label="Abrir menú"
         aria-expanded="false"
         data-menu-button
       >
-        <Icon name="menu" size={24} />
+        <span data-icon-open>
+          <Icon name="menu" size={24} />
+        </span>
+        <span data-icon-close class="hidden">
+          <Icon name="close" size={24} />
+        </span>
       </button>
     </div>
   </Container>
+</header>
 
-  <div class="md:hidden hidden fixed inset-0 z-[60]" data-mobile-menu>
-    <div
-      class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-      data-menu-overlay
-    >
+<!-- Mobile Menu Overlay -->
+<div
+  class="md:hidden fixed inset-0 z-[60] pointer-events-none"
+  data-mobile-menu
+  aria-hidden="true"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+    data-menu-overlay
+  ></div>
+
+  <!-- Drawer panel -->
+  <div
+    class="absolute top-0 right-0 h-full w-[min(320px,85vw)] bg-white dark:bg-background-dark border-l border-slate-200 dark:border-slate-700 flex flex-col translate-x-full transition-transform duration-300 ease-out shadow-2xl"
+    data-menu-panel
+  >
+    <!-- Header del drawer -->
+    <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100 dark:border-slate-800">
+      <a href="/" data-menu-link>
+        <img src={logoSrc.src} alt="Briangel" style="height: 40px; width: auto;" />
+      </a>
+      <button
+        class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+        aria-label="Cerrar menú"
+        data-menu-close
+      >
+        <Icon name="close" size={20} />
+      </button>
     </div>
-    <div
-      class="relative ml-auto h-full w-full max-w-sm bg-white dark:bg-background-dark border-l border-slate-200 dark:border-slate-800 p-6 flex flex-col"
-    >
-      <div class="flex items-center justify-between">
-        <a
-          href="/"
-          class="flex items-center gap-3 group cursor-pointer"
-          data-menu-link
-        >
-          <img src={logoSrc.src} alt="Briangel" style="height: 48px; width: auto;" />
-        </a>
 
-        <button
-          class="p-2 text-slate-600 dark:text-slate-400"
-          aria-label="Close menu"
-          data-menu-close
-        >
-          <Icon name="close" size={24} />
-        </button>
-      </div>
+    <!-- Nav links -->
+    <nav class="flex-1 flex flex-col px-4 pt-6 gap-1">
+      <a
+        href="/"
+        class:list={[
+          "flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+          currentPath === "/"
+            ? "text-primary bg-primary/8"
+            : "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800",
+        ]}
+        data-menu-link
+      >
+        {currentPath === "/" && <span class="w-1 h-5 rounded-full bg-primary shrink-0"></span>}
+        Inicio
+      </a>
 
-      <nav class="mt-10 flex flex-col gap-6">
-        <a
-          href="/"
-          class:list={[
-            "text-base font-bold uppercase tracking-widest transition-colors",
-            currentPath === "/"
-              ? "text-primary"
-              : "text-slate-700 dark:text-slate-200 hover:text-primary",
-          ]}
-          data-menu-link
-        >
-          Inicio
-        </a>
-        <a
-          href="/projects"
-          class:list={[
-            "text-base font-bold uppercase tracking-widest transition-colors",
-            currentPath === "/projects" || currentPath.startsWith("/projects/")
-              ? "text-primary"
-              : "text-slate-700 dark:text-slate-200 hover:text-primary",
-          ]}
-          data-menu-link
-        >
-          Propiedades
-        </a>
-        <a
-          href="/about"
-          class:list={[
-            "text-base font-bold uppercase tracking-widest transition-colors",
-            currentPath === "/about"
-              ? "text-primary"
-              : "text-slate-700 dark:text-slate-200 hover:text-primary",
-          ]}
-          data-menu-link
-        >
-          Quienes Somos
-        </a>
+      <a
+        href="/projects"
+        class:list={[
+          "flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+          currentPath === "/projects" || currentPath.startsWith("/projects/")
+            ? "text-primary bg-primary/8"
+            : "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800",
+        ]}
+        data-menu-link
+      >
+        {(currentPath === "/projects" || currentPath.startsWith("/projects/")) && <span class="w-1 h-5 rounded-full bg-primary shrink-0"></span>}
+        Propiedades
+      </a>
+
+      <a
+        href="/about"
+        class:list={[
+          "flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all",
+          currentPath === "/about"
+            ? "text-primary bg-primary/8"
+            : "text-slate-700 dark:text-slate-200 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-800",
+        ]}
+        data-menu-link
+      >
+        {currentPath === "/about" && <span class="w-1 h-5 rounded-full bg-primary shrink-0"></span>}
+        Quienes Somos
+      </a>
+
+      <!-- CTA dentro del drawer -->
+      <div class="mt-4 px-0">
         <a
           href="/contact"
-          class="mt-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center justify-center gap-2"
+          class="w-full bg-primary hover:bg-primary/90 active:bg-primary/80 text-white px-6 py-3.5 rounded-lg text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center justify-center gap-2 shadow-md shadow-primary/20"
           data-menu-link
         >
           <Icon name="send" size={16} />
           <span>Contacto</span>
         </a>
-      </nav>
-
-      <div class="mt-auto pt-8 text-xs text-slate-500 dark:text-slate-400">
-        Medellín, Antioquia • Colombia
       </div>
+    </nav>
+
+    <!-- Footer del drawer -->
+    <div class="px-8 pb-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+      <p class="text-xs text-slate-400 dark:text-slate-500 font-medium uppercase tracking-widest">
+        Medellín, Antioquia
+      </p>
+      <p class="text-xs text-slate-400 dark:text-slate-500">Colombia</p>
     </div>
   </div>
-</header>
+</div>
 
 <script is:inline>
   const menu = document.querySelector("[data-mobile-menu]");
+  const panel = document.querySelector("[data-menu-panel]");
+  const overlay = document.querySelector("[data-menu-overlay]");
   const openButton = document.querySelector("[data-menu-button]");
   const closeButton = document.querySelector("[data-menu-close]");
-  const overlay = document.querySelector("[data-menu-overlay]");
+  const iconOpen = document.querySelector("[data-icon-open]");
+  const iconClose = document.querySelector("[data-icon-close]");
   const links = Array.from(document.querySelectorAll("[data-menu-link]"));
 
   const setOpen = (isOpen) => {
-    if (!menu || !openButton) return;
-    menu.classList.toggle("hidden", !isOpen);
+    if (!menu || !panel || !overlay || !openButton) return;
+
+    if (isOpen) {
+      menu.classList.remove("pointer-events-none");
+      menu.setAttribute("aria-hidden", "false");
+      overlay.classList.remove("opacity-0");
+      overlay.classList.add("opacity-100");
+      panel.classList.remove("translate-x-full");
+      panel.classList.add("translate-x-0");
+      document.documentElement.classList.add("overflow-hidden");
+      document.body.classList.add("overflow-hidden");
+    } else {
+      menu.classList.add("pointer-events-none");
+      menu.setAttribute("aria-hidden", "true");
+      overlay.classList.remove("opacity-100");
+      overlay.classList.add("opacity-0");
+      panel.classList.remove("translate-x-0");
+      panel.classList.add("translate-x-full");
+      document.documentElement.classList.remove("overflow-hidden");
+      document.body.classList.remove("overflow-hidden");
+    }
+
     openButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    document.documentElement.classList.toggle("overflow-hidden", isOpen);
-    document.body.classList.toggle("overflow-hidden", isOpen);
+    iconOpen?.classList.toggle("hidden", isOpen);
+    iconClose?.classList.toggle("hidden", !isOpen);
   };
 
   openButton?.addEventListener("click", () => {
@@ -183,3 +238,9 @@ const currentPath = Astro.url.pathname;
     if (event.key === "Escape") setOpen(false);
   });
 </script>
+
+<style>
+  .bg-primary\/8 {
+    background-color: color-mix(in srgb, var(--color-primary, #DEC17D) 8%, transparent);
+  }
+</style>
