@@ -6,6 +6,22 @@ import project3Image from "../assets/img/projects-page-img-03.jpg";
 import project4Image from "../assets/img/projects-page-img-04.jpg";
 import project5Image from "../assets/img/projects-page-img-05.jpg";
 import project6Image from "../assets/img/projects-page-img-06.jpg";
+import casa1Image from "../assets/img/casa (1).jpeg";
+import casa2Image from "../assets/img/casa (2).jpeg";
+import casa3Image from "../assets/img/casa (3).jpeg";
+import casa4Image from "../assets/img/casa (4).jpeg";
+import casa5Image from "../assets/img/casa (5).jpeg";
+import casa6Image from "../assets/img/casa (6).jpeg";
+import casa7Image from "../assets/img/casa (7).jpeg";
+import casa8Image from "../assets/img/casa (8).jpeg";
+import casa9Image from "../assets/img/casa (9).jpeg";
+import casa10Image from "../assets/img/casa (10).jpeg";
+import casa11Image from "../assets/img/casa (11).jpeg";
+import casa12Image from "../assets/img/casa (12).jpeg";
+import casa13Image from "../assets/img/casa (13).jpeg";
+import casa14Image from "../assets/img/casa (14).jpeg";
+import casa15Image from "../assets/img/casa (15).jpeg";
+import casa16Image from "../assets/img/casa (16).jpeg";
 import faro1Image from "../assets/img/faro (1).jpeg";
 import faro2Image from "../assets/img/faro (2).jpeg";
 import faro3Image from "../assets/img/faro (3).jpeg";
@@ -26,7 +42,7 @@ import faro17Image from "../assets/img/faro (17).jpeg";
 import faro18Image from "../assets/img/faro (18).jpeg";
 
 export type PropertyOperation = "Venta" | "Arriendo";
-export type PropertyType = "Apartamento" | "Casa" | "Local";
+export type PropertyType = "Departamento" | "Casa" | "Local";
 
 export type Property = {
   slug: string;
@@ -47,9 +63,55 @@ export type Property = {
 
 export const properties: Property[] = [
   {
+    slug: "casa-grande-sector-gran-via-antofagasta",
+    title: "Casa Grande • Sector Gran Vía",
+    type: "Casa",
+    location: "Antofagasta • Sector Gran Vía (Calle Rosita Renard)",
+    operation: "Arriendo",
+    price: "$2.500.000 / mes + GC (Incluye Agua, Luz, Cable e Internet)",
+    bedrooms: 7,
+    bathrooms: 7,
+    areaM2: 500,
+    description:
+      "Casa de 3 pisos en Calle Rosita Renard, sector Gran Vía, a 3 cuadras de Av. Angamos. Zona residencial consolidada con cercanía a playas, supermercados, universidades, colegios y centros médicos. Ideal para familias grandes, grupos de trabajadores u oficinas. Comisión: 50% | Garantía: $2.500.000.",
+    features: [
+      "3 pisos",
+      "Piscina",
+      "Cocina amoblada y equipada",
+      "Quincho",
+      "Sala de Pool",
+      "Terraza completa",
+      "Balcón con vista a la calle",
+      "Balcón con vista a la piscina",
+      "Logia / Bodega",
+      "Cámaras de vigilancia",
+      "Agua incluida",
+      "Luz incluida",
+      "Cable e Internet incluidos",
+    ],
+    images: [
+      casa1Image,
+      casa2Image,
+      casa3Image,
+      casa4Image,
+      casa5Image,
+      casa6Image,
+      casa7Image,
+      casa8Image,
+      casa9Image,
+      casa10Image,
+      casa11Image,
+      casa12Image,
+      casa13Image,
+      casa14Image,
+      casa15Image,
+      casa16Image,
+    ],
+  },
+  {
     slug: "departamento-amoblado-edificio-faro-norte-antofagasta",
-    title: "Departamento amoblado 2 dormitorios • Edificio Faro Norte",
-    type: "Apartamento",
+    title: "Departamento amoblado • Edificio Faro Norte",
+    type: "Departamento",
     location: "Antofagasta • Sector Norte (Ascotán Norte #155)",
     operation: "Arriendo",
     price: "$730.000 / mes (gastos comunes incluidos)",
@@ -96,7 +158,7 @@ export const properties: Property[] = [
   {
     slug: "casa-conjunto-terraza-envigado",
     title: "Casa en conjunto con terraza",
-    type: "Casa",
+    type: "Local",
     location: "Envigado • La Intermedia",
     operation: "Arriendo",
     price: "$4.200.000 / mes",
@@ -136,8 +198,8 @@ export const properties: Property[] = [
   },
   {
     slug: "apartamento-loft-granada",
-    title: "Apartamento tipo loft",
-    type: "Apartamento",
+    title: "Departamento tipo loft",
+    type: "Local",
     location: "Cali • Granada",
     operation: "Venta",
     price: "$310.000.000",
@@ -158,7 +220,7 @@ export const properties: Property[] = [
   {
     slug: "casa-campestre-llanogrande",
     title: "Casa campestre con lote",
-    type: "Casa",
+    type: "Local",
     location: "Rionegro • Llanogrande",
     operation: "Venta",
     price: "$1.950.000.000",
@@ -179,8 +241,8 @@ export const properties: Property[] = [
   },
   {
     slug: "apartamento-cerca-metro-sabaneta",
-    title: "Apartamento cerca al metro",
-    type: "Apartamento",
+    title: "Departamento cerca al metro",
+    type: "Local",
     location: "Medellín • Sabaneta",
     operation: "Arriendo",
     price: "$2.400.000 / mes",
@@ -190,7 +252,7 @@ export const properties: Property[] = [
     parking: 1,
     stratum: 4,
     description:
-      "Apartamento cómodo y bien ubicado, ideal para moverse fácil por la ciudad. Buen metraje y distribución funcional.",
+      "Departamento cómodo y bien ubicado, ideal para moverse fácil por la ciudad. Buen metraje y distribución funcional.",
     features: [
       "Cerca al metro",
       "Unidad con portería",

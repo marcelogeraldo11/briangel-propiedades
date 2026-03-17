@@ -72,9 +72,129 @@ const currentPath = Astro.url.pathname;
       <button
         class="md:hidden p-2 text-slate-600 dark:text-slate-400"
         aria-label="Open menu"
+        aria-expanded="false"
+        data-menu-button
       >
         <Icon name="menu" size={24} />
       </button>
     </div>
   </Container>
+
+  <div class="md:hidden hidden fixed inset-0 z-[60]" data-mobile-menu>
+    <div
+      class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+      data-menu-overlay
+    >
+    </div>
+    <div
+      class="relative ml-auto h-full w-full max-w-sm bg-white dark:bg-background-dark border-l border-slate-200 dark:border-slate-800 p-6 flex flex-col"
+    >
+      <div class="flex items-center justify-between">
+        <a
+          href="/"
+          class="flex items-center gap-3 group cursor-pointer"
+          data-menu-link
+        >
+          <div class="text-primary">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 48 48">
+              <path
+                d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z"
+              ></path>
+            </svg>
+          </div>
+          <span class="text-xl font-black tracking-tighter uppercase"
+            >Briangel</span
+          >
+        </a>
+
+        <button
+          class="p-2 text-slate-600 dark:text-slate-400"
+          aria-label="Close menu"
+          data-menu-close
+        >
+          <Icon name="close" size={24} />
+        </button>
+      </div>
+
+      <nav class="mt-10 flex flex-col gap-6">
+        <a
+          href="/"
+          class:list={[
+            "text-base font-bold uppercase tracking-widest transition-colors",
+            currentPath === "/"
+              ? "text-primary"
+              : "text-slate-700 dark:text-slate-200 hover:text-primary",
+          ]}
+          data-menu-link
+        >
+          Inicio
+        </a>
+        <a
+          href="/projects"
+          class:list={[
+            "text-base font-bold uppercase tracking-widest transition-colors",
+            currentPath === "/projects" || currentPath.startsWith("/projects/")
+              ? "text-primary"
+              : "text-slate-700 dark:text-slate-200 hover:text-primary",
+          ]}
+          data-menu-link
+        >
+          Propiedades
+        </a>
+        <a
+          href="/about"
+          class:list={[
+            "text-base font-bold uppercase tracking-widest transition-colors",
+            currentPath === "/about"
+              ? "text-primary"
+              : "text-slate-700 dark:text-slate-200 hover:text-primary",
+          ]}
+          data-menu-link
+        >
+          Quienes Somos
+        </a>
+        <a
+          href="/contact"
+          class="mt-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center justify-center gap-2"
+          data-menu-link
+        >
+          <Icon name="send" size={16} />
+          <span>Contacto</span>
+        </a>
+      </nav>
+
+      <div class="mt-auto pt-8 text-xs text-slate-500 dark:text-slate-400">
+        Medellín, Antioquia • Colombia
+      </div>
+    </div>
+  </div>
 </header>
+
+<script is:inline>
+  const menu = document.querySelector("[data-mobile-menu]");
+  const openButton = document.querySelector("[data-menu-button]");
+  const closeButton = document.querySelector("[data-menu-close]");
+  const overlay = document.querySelector("[data-menu-overlay]");
+  const links = Array.from(document.querySelectorAll("[data-menu-link]"));
+
+  const setOpen = (isOpen) => {
+    if (!menu || !openButton) return;
+    menu.classList.toggle("hidden", !isOpen);
+    openButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    document.documentElement.classList.toggle("overflow-hidden", isOpen);
+    document.body.classList.toggle("overflow-hidden", isOpen);
+  };
+
+  openButton?.addEventListener("click", () => {
+    const isOpen = openButton.getAttribute("aria-expanded") === "true";
+    setOpen(!isOpen);
+  });
+
+  closeButton?.addEventListener("click", () => setOpen(false));
+  overlay?.addEventListener("click", () => setOpen(false));
+  links.forEach((link) => link.addEventListener("click", () => setOpen(false)));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+</script>

@@ -40,35 +40,23 @@ const details = [
   data-type={type}
 >
   <a href={`/projects/${slug}`} class="block focus:outline-none focus:ring-1 focus:ring-primary rounded">
-    <div class="relative overflow-hidden mb-4 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center">
+    <div class="relative overflow-hidden mb-4 bg-slate-200 dark:bg-slate-800 rounded aspect-[4/3]">
       <div class="absolute top-4 left-4 z-20">
         <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/90 text-slate-900">
           {operation}
         </span>
       </div>
-      
+
       {typeof image === 'string' ? (
-        isRemoteImage ? (
-          <img
-            src={image}
-            alt={alt}
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            loading="lazy"
-            decoding="async"
-            width={800}
-            height={600}
-          />
-        ) : (
-          <img
-            src={image}
-            alt={alt}
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            loading="lazy"
-            decoding="async"
-            width={800}
-            height={600}
-          />
-        )
+        <img
+          src={image}
+          alt={alt}
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy"
+          decoding="async"
+          width={800}
+          height={600}
+        />
       ) : isSVG ? (
         <img
           src={image.src}
@@ -83,26 +71,29 @@ const details = [
         <Image
           src={image}
           alt={alt}
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           widths={[240, 540, 720, image.width]}
           sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${image.width}px`}
         />
       )}
-      
+
     </div>
-    
-    <div class="flex justify-between items-start gap-4">
-      <div>
-        <h3 class="text-slate-900 dark:text-slate-100 text-lg font-semibold tracking-tight group-hover:text-primary transition-colors">
+
+    <div class="flex flex-col gap-1">
+      <div class="flex items-start justify-between gap-3">
+        <h3 class="text-slate-900 dark:text-slate-100 text-base font-semibold tracking-tight group-hover:text-primary transition-colors line-clamp-2 leading-snug">
           {title}
         </h3>
-        <p class="text-slate-500 dark:text-slate-400 text-sm font-light">{type} • {location}</p>
-        {details ? (
-          <p class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider mt-2">
-            {details}
-          </p>
-        ) : null}
+        <span class="text-slate-900 dark:text-slate-100 text-sm font-bold whitespace-nowrap shrink-0 mt-0.5">
+          {price}
+        </span>
       </div>
-      <span class="text-slate-900 dark:text-slate-100 text-sm font-bold whitespace-nowrap">{price}</span>
+      <p class="text-slate-500 dark:text-slate-400 text-sm font-light truncate">{type} • {location}</p>
+      {details ? (
+        <p class="text-slate-400 dark:text-slate-500 text-xs font-medium uppercase tracking-wider mt-1">
+          {details}
+        </p>
+      ) : null}
     </div>
   </a>
 </article>
